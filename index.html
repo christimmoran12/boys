@@ -9,6 +9,7 @@
             margin: 0;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -65,20 +66,55 @@
                 font-size: 60px;
             }
         }
+
+        .day-counter {
+            margin-top: 60px;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .day-counter {
+                font-size: 18px;
+                margin-top: 40px;
+            }
+        }
     </style>
 </head>
 <body>
     <button id="boysBtn" class="circle-button">BOYS!</button>
+    <div id="dayCounter" class="day-counter"></div>
     <audio id="audio"></audio>
 
     <script>
         const audio = document.getElementById('audio');
         const boysBtn = document.getElementById('boysBtn');
+        const dayCounter = document.getElementById('dayCounter');
         
         let totalDuration = 0;
         const snippetDuration = 12;
         
         audio.src = 'https://pub-c322ad39655a4cd7883c56e82daa0eae.r2.dev/BOYSBOYSBOYS.mp3';
+        
+        // Load and display days since last press
+        function updateDayCounter() {
+            const lastPress = parseInt(localStorage.getItem('lastBoysPress') || '0');
+            if (lastPress === 0) {
+                dayCounter.textContent = "";
+            } else {
+                const now = Date.now();
+                const daysSince = Math.floor((now - lastPress) / (1000 * 60 * 60 * 24));
+                dayCounter.textContent = `It's been ${daysSince} day${daysSince !== 1 ? 's' : ''} since a Boys Boys Boys`;
+            }
+        }
+        
+        // Update counter on load
+        updateDayCounter();
+        
+        // Update counter every minute
+        setInterval(updateDayCounter, 60000);
         
         audio.addEventListener('loadedmetadata', () => {
             totalDuration = audio.duration;
@@ -91,6 +127,10 @@
         boysBtn.addEventListener('click', () => {
             if (totalDuration === 0) return;
             
+            // Save current timestamp
+            localStorage.setItem('lastBoysPress', Date.now().toString());
+            updateDayCounter();
+            
             // Calculate random start position (ensuring we don't go past the end)
             const maxStartPosition = totalDuration - snippetDuration;
             const randomPosition = Math.random() * maxStartPosition;
@@ -100,7 +140,7 @@
             
             boysBtn.classList.add('playing');
             
-            // Stop after 10 seconds
+            // Stop after 12 seconds
             setTimeout(() => {
                 audio.pause();
                 boysBtn.classList.remove('playing');
