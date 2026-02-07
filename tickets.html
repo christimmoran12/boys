@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NHRL Ticket Geography</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e17; font-family: 'DM Sans', sans-serif; }
+  #password-gate {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; flex-direction: column; gap: 16px;
+  }
+  #password-gate .logo { font-family: 'Space Mono', monospace; font-size: 11px; color: #f59e0b; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+  #password-gate h2 { color: #fff; font-size: 22px; font-weight: 700; }
+  #password-gate .input-row { display: flex; gap: 8px; margin-top: 8px; }
+  #password-gate input {
+    background: #141926; border: 1px solid #2a3452; border-radius: 6px;
+    padding: 10px 16px; color: #e0e4ed; font-size: 14px; font-family: 'Space Mono', monospace;
+    outline: none; width: 200px;
+  }
+  #password-gate input:focus { border-color: #f59e0b; }
+  #password-gate button {
+    background: #f59e0b; color: #0a0e17; border: none; border-radius: 6px;
+    padding: 10px 20px; font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  #password-gate button:hover { background: #d97706; }
+  #password-gate .error { color: #ef4444; font-size: 12px; height: 16px; }
+  #app { display: none; }
+</style>
+</head>
+<body>
+
+<div id="password-gate">
+  <div class="logo">NHRL Ticket Geography</div>
+  <h2>Enter Password</h2>
+  <div class="input-row">
+    <input type="password" id="pw-input" placeholder="Password" autofocus />
+    <button onclick="checkPw()">Enter</button>
+  </div>
+  <div class="error" id="pw-error"></div>
+</div>
+
+<div id="app"></div>
+
+<script>
+function checkPw() {
+  var v = document.getElementById('pw-input').value;
+  if (v === '1024') {
+    document.getElementById('password-gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadApp();
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect password';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+
+function loadApp() {
+  var s1 = document.createElement('script'); s1.crossOrigin = ''; s1.src = 'https://unpkg.com/react@18/umd/react.production.min.js';
+  var s2 = document.createElement('script'); s2.crossOrigin = ''; s2.src = 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
+  var s3 = document.createElement('script'); s3.src = 'https://unpkg.com/@babel/standalone/babel.min.js';
+  s1.onload = function() { document.head.appendChild(s2); };
+  s2.onload = function() { document.head.appendChild(s3); };
+  s3.onload = function() {
+    var appScript = document.createElement('script');
+    appScript.type = 'text/babel';
+    appScript.textContent = document.getElementById('app-source').textContent;
+    document.body.appendChild(appScript);
+  };
+  document.head.appendChild(s1);
+}
+</script>
+
+<script id="app-source" type="text/plain">
+const { useState, useMemo } = React;
+
+const CITIES = [{"city":"Agawam","lat":42.07,"lng":-72.61,"feb25":2,"may25":0,"feb26":0,"dist":77.9},{"city":"Albany","lat":42.65,"lng":-73.75,"feb25":0,"may25":8,"feb26":0,"dist":107.1},{"city":"Albuquerque","lat":35.08,"lng":-106.65,"feb25":0,"may25":4,"feb26":0,"dist":1842.6},{"city":"Allentown","lat":40.6,"lng":-75.49,"feb25":0,"may25":0,"feb26":2,"dist":114.0},{"city":"Allston","lat":42.35,"lng":-71.13,"feb25":0,"may25":0,"feb26":1,"dist":145.5},{"city":"Amherst","lat":42.37,"lng":-72.52,"feb25":0,"may25":0,"feb26":5,"dist":98.0},{"city":"Andover","lat":42.66,"lng":-71.14,"feb25":0,"may25":3,"feb26":0,"dist":158.3},{"city":"Arlington","lat":38.88,"lng":-77.1,"feb25":1,"may25":2,"feb26":0,"dist":248.8},{"city":"Ashburn","lat":39.04,"lng":-77.49,"feb25":2,"may25":0,"feb26":0,"dist":258.7},{"city":"Athens","lat":33.96,"lng":-83.38,"feb25":0,"may25":0,"feb26":2,"dist":735.7},{"city":"Avon","lat":41.81,"lng":-72.83,"feb25":0,"may25":0,"feb26":2,"dist":56.6},{"city":"Bayville","lat":40.91,"lng":-73.56,"feb25":0,"may25":2,"feb26":0,"dist":16.2},{"city":"Bedford","lat":41.2,"lng":-73.64,"feb25":0,"may25":0,"feb26":7,"dist":12.7},{"city":"Belleville","lat":40.79,"lng":-74.15,"feb25":4,"may25":0,"feb26":0,"dist":44.4},{"city":"Belmont","lat":42.4,"lng":-71.18,"feb25":0,"may25":3,"feb26":0,"dist":145.4},{"city":"Berlin","lat":41.62,"lng":-72.75,"feb25":0,"may25":6,"feb26":0,"dist":49.0},{"city":"Bethel","lat":41.37,"lng":-73.41,"feb25":7,"may25":0,"feb26":0,"dist":17.3},{"city":"Bloomfield","lat":40.81,"lng":-74.19,"feb25":2,"may25":0,"feb26":0,"dist":45.5},{"city":"Boardman","lat":41.02,"lng":-80.66,"feb25":0,"may25":2,"feb26":0,"dist":377.1},{"city":"Boston","lat":42.36,"lng":-71.06,"feb25":2,"may25":9,"feb26":0,"dist":148.8},{"city":"Brentwood","lat":40.78,"lng":-73.25,"feb25":2,"may25":0,"feb26":0,"dist":25.1},{"city":"Brewster","lat":41.4,"lng":-73.62,"feb25":1,"may25":6,"feb26":0,"dist":22.0},{"city":"Bridgeport","lat":41.19,"lng":-73.2,"feb25":26,"may25":17,"feb26":21,"dist":12.4},{"city":"Bristol","lat":41.67,"lng":-72.95,"feb25":8,"may25":0,"feb26":0,"dist":45.1},{"city":"Bronxville","lat":40.94,"lng":-73.83,"feb25":1,"may25":2,"feb26":0,"dist":24.7},{"city":"Brookfield","lat":41.46,"lng":-73.4,"feb25":0,"may25":0,"feb26":2,"dist":23.5},{"city":"Brookline","lat":42.33,"lng":-71.12,"feb25":0,"may25":0,"feb26":2,"dist":145.1},{"city":"Brooklyn","lat":40.65,"lng":-73.95,"feb25":15,"may25":13,"feb26":6,"dist":42.7},{"city":"Burlington","lat":44.48,"lng":-73.21,"feb25":0,"may25":1,"feb26":0,"dist":232.4},{"city":"Cambridge","lat":42.37,"lng":-71.11,"feb25":7,"may25":0,"feb26":1,"dist":147.1},{"city":"Carmel","lat":41.43,"lng":-73.68,"feb25":3,"may25":0,"feb26":0,"dist":25.3},{"city":"Cary","lat":35.79,"lng":-78.78,"feb25":0,"may25":0,"feb26":1,"dist":468.6},{"city":"Castro Valley","lat":37.69,"lng":-122.09,"feb25":2,"may25":0,"feb26":0,"dist":2575.5},{"city":"Cedar Grove","lat":40.86,"lng":-74.23,"feb25":0,"may25":1,"feb26":0,"dist":45.9},{"city":"Chappaqua","lat":41.16,"lng":-73.77,"feb25":0,"may25":0,"feb26":1,"dist":18.4},{"city":"Charlottesville","lat":38.03,"lng":-78.48,"feb25":0,"may25":1,"feb26":0,"dist":343.7},{"city":"Chelmsford","lat":42.6,"lng":-71.37,"feb25":2,"may25":2,"feb26":0,"dist":146.9},{"city":"Cherry Hill","lat":39.93,"lng":-75.0,"feb25":0,"may25":0,"feb26":2,"dist":116.8},{"city":"Chicago","lat":41.88,"lng":-87.63,"feb25":0,"may25":0,"feb26":2,"dist":736.4},{"city":"Chicopee","lat":42.15,"lng":-72.61,"feb25":0,"may25":3,"feb26":0,"dist":82.6},{"city":"Clifton","lat":40.86,"lng":-74.16,"feb25":2,"may25":0,"feb26":0,"dist":42.6},{"city":"Colorado Springs","lat":38.83,"lng":-104.82,"feb25":1,"may25":0,"feb26":0,"dist":1661.1},{"city":"Congers","lat":41.15,"lng":-73.94,"feb25":0,"may25":0,"feb26":3,"dist":27.1},{"city":"Cortlandt Manor","lat":41.29,"lng":-73.88,"feb25":0,"may25":3,"feb26":0,"dist":26.6},{"city":"Cranston","lat":41.78,"lng":-71.44,"feb25":0,"may25":1,"feb26":0,"dist":112.2},{"city":"Cresco","lat":41.06,"lng":-75.25,"feb25":0,"may25":0,"feb26":5,"dist":95.4},{"city":"Croton-on-Hudson","lat":41.21,"lng":-73.89,"feb25":0,"may25":4,"feb26":0,"dist":25.2},{"city":"Dallas","lat":32.78,"lng":-96.8,"feb25":0,"may25":2,"feb26":0,"dist":1408.0},{"city":"Danbury","lat":41.4,"lng":-73.45,"feb25":3,"may25":5,"feb26":7,"dist":19.4},{"city":"Danielson","lat":41.8,"lng":-71.89,"feb25":0,"may25":1,"feb26":0,"dist":92.1},{"city":"Darien","lat":41.08,"lng":-73.47,"feb25":0,"may25":4,"feb26":0,"dist":3.8},{"city":"Denver","lat":39.74,"lng":-104.98,"feb25":0,"may25":2,"feb26":0,"dist":1653.6},{"city":"Derby","lat":41.32,"lng":-73.09,"feb25":21,"may25":2,"feb26":2,"dist":22.0},{"city":"Dickson","lat":36.08,"lng":-87.39,"feb25":0,"may25":2,"feb26":0,"dist":829.6},{"city":"Dobbs Ferry","lat":41.01,"lng":-73.87,"feb25":0,"may25":0,"feb26":6,"dist":24.6},{"city":"East Hartford","lat":41.78,"lng":-72.61,"feb25":0,"may25":4,"feb26":3,"dist":62.0},{"city":"East Haven","lat":41.28,"lng":-72.87,"feb25":0,"may25":2,"feb26":0,"dist":30.7},{"city":"East Longmeadow","lat":42.07,"lng":-72.51,"feb25":0,"may25":6,"feb26":0,"dist":80.7},{"city":"East Northport","lat":40.88,"lng":-73.32,"feb25":0,"may25":4,"feb26":6,"dist":17.4},{"city":"East Orange","lat":40.77,"lng":-74.21,"feb25":2,"may25":0,"feb26":0,"dist":47.8},{"city":"Easthampton","lat":42.27,"lng":-72.67,"feb25":0,"may25":0,"feb26":3,"dist":88.4},{"city":"Elmont","lat":40.7,"lng":-73.71,"feb25":0,"may25":0,"feb26":1,"dist":32.7},{"city":"Endicott","lat":42.1,"lng":-76.05,"feb25":0,"may25":2,"feb26":0,"dist":151.8},{"city":"Enfield","lat":41.98,"lng":-72.59,"feb25":3,"may25":1,"feb26":0,"dist":73.3},{"city":"Essex","lat":41.35,"lng":-72.39,"feb25":0,"may25":0,"feb26":2,"dist":55.8},{"city":"Fairfield","lat":41.14,"lng":-73.26,"feb25":27,"may25":8,"feb26":12,"dist":8.4},{"city":"Fletcher","lat":35.43,"lng":-82.5,"feb25":2,"may25":2,"feb26":0,"dist":629.6},{"city":"Framingham","lat":42.28,"lng":-71.42,"feb25":5,"may25":0,"feb26":0,"dist":130.6},{"city":"Gales Ferry","lat":41.43,"lng":-72.08,"feb25":0,"may25":4,"feb26":0,"dist":72.8},{"city":"Glastonbury","lat":41.71,"lng":-72.61,"feb25":3,"may25":0,"feb26":0,"dist":58.5},{"city":"Goshen","lat":41.38,"lng":-73.35,"feb25":0,"may25":1,"feb26":0,"dist":18.3},{"city":"Great Barrington","lat":42.2,"lng":-73.36,"feb25":2,"may25":0,"feb26":0,"dist":74.7},{"city":"Greenbelt","lat":38.99,"lng":-76.88,"feb25":0,"may25":1,"feb26":0,"dist":234.8},{"city":"Greenwich","lat":41.03,"lng":-73.63,"feb25":5,"may25":0,"feb26":4,"dist":12.6},{"city":"Groton","lat":41.35,"lng":-72.08,"feb25":0,"may25":1,"feb26":0,"dist":71.4},{"city":"Guilford","lat":41.29,"lng":-72.68,"feb25":2,"may25":0,"feb26":0,"dist":40.2},{"city":"Hamden","lat":41.4,"lng":-72.9,"feb25":5,"may25":3,"feb26":6,"dist":33.2},{"city":"Harrisburg","lat":40.27,"lng":-76.88,"feb25":0,"may25":1,"feb26":0,"dist":190.5},{"city":"Hartford","lat":41.76,"lng":-72.68,"feb25":0,"may25":20,"feb26":2,"dist":58.5},{"city":"Hastings-on-Hudson","lat":41.0,"lng":-73.88,"feb25":0,"may25":0,"feb26":2,"dist":25.4},{"city":"Hebron","lat":41.66,"lng":-72.37,"feb25":4,"may25":2,"feb26":0,"dist":66.0},{"city":"Hicksville","lat":40.77,"lng":-73.52,"feb25":0,"may25":0,"feb26":1,"dist":24.7},{"city":"Hillsdale","lat":42.19,"lng":-73.53,"feb25":1,"may25":0,"feb26":0,"dist":74.2},{"city":"Houston","lat":29.76,"lng":-95.37,"feb25":0,"may25":0,"feb26":3,"dist":1457.4},{"city":"Huntington","lat":40.87,"lng":-73.43,"feb25":0,"may25":2,"feb26":0,"dist":17.3},{"city":"Indianapolis","lat":39.77,"lng":-86.16,"feb25":0,"may25":1,"feb26":0,"dist":675.8},{"city":"Irvington","lat":41.04,"lng":-73.87,"feb25":0,"may25":5,"feb26":0,"dist":24.1},{"city":"Ithaca","lat":42.44,"lng":-76.5,"feb25":0,"may25":43,"feb26":6,"dist":183.0},{"city":"Jersey City","lat":40.73,"lng":-74.08,"feb25":0,"may25":5,"feb26":2,"dist":43.7},{"city":"Johnston","lat":41.82,"lng":-71.52,"feb25":0,"may25":1,"feb26":0,"dist":109.6},{"city":"Kansas City","lat":39.1,"lng":-94.58,"feb25":0,"may25":1,"feb26":0,"dist":1124.1},{"city":"Lakewood","lat":40.1,"lng":-74.22,"feb25":0,"may25":1,"feb26":0,"dist":82.0},{"city":"Larchmont","lat":40.93,"lng":-73.75,"feb25":12,"may25":0,"feb26":0,"dist":21.6},{"city":"Latrobe","lat":40.32,"lng":-79.38,"feb25":0,"may25":0,"feb26":1,"dist":316.9},{"city":"Lowell","lat":42.63,"lng":-71.32,"feb25":0,"may25":3,"feb26":0,"dist":150.2},{"city":"Manchester","lat":41.78,"lng":-72.52,"feb25":0,"may25":9,"feb26":0,"dist":65.2},{"city":"Marietta","lat":33.95,"lng":-84.55,"feb25":0,"may25":0,"feb26":2,"dist":784.6},{"city":"Medfield","lat":42.19,"lng":-71.31,"feb25":0,"may25":1,"feb26":0,"dist":131.6},{"city":"Medford","lat":42.42,"lng":-71.11,"feb25":0,"may25":0,"feb26":1,"dist":149.1},{"city":"Meriden","lat":41.54,"lng":-72.81,"feb25":3,"may25":0,"feb26":5,"dist":42.9},{"city":"Middlebury","lat":41.53,"lng":-73.13,"feb25":3,"may25":0,"feb26":2,"dist":32.1},{"city":"Middletown","lat":41.56,"lng":-72.65,"feb25":11,"may25":9,"feb26":5,"dist":50.2},{"city":"Milford","lat":41.22,"lng":-73.06,"feb25":4,"may25":2,"feb26":2,"dist":20.0},{"city":"Montvale","lat":41.05,"lng":-74.03,"feb25":2,"may25":0,"feb26":0,"dist":32.1},{"city":"Mount Holly","lat":39.99,"lng":-74.79,"feb25":3,"may25":0,"feb26":0,"dist":106.2},{"city":"Mount Kisco","lat":41.2,"lng":-73.73,"feb25":0,"may25":1,"feb26":2,"dist":17.0},{"city":"Naperville","lat":41.79,"lng":-88.15,"feb25":2,"may25":0,"feb26":0,"dist":763.3},{"city":"Naugatuck","lat":41.49,"lng":-73.05,"feb25":10,"may25":5,"feb26":2,"dist":32.0},{"city":"New Britain","lat":41.66,"lng":-72.78,"feb25":0,"may25":0,"feb26":6,"dist":49.9},{"city":"New Canaan","lat":41.15,"lng":-73.49,"feb25":7,"may25":6,"feb26":2,"dist":4.2},{"city":"New Haven","lat":41.31,"lng":-72.92,"feb25":14,"may25":4,"feb26":12,"dist":29.1},{"city":"New Hope","lat":40.36,"lng":-74.95,"feb25":2,"may25":0,"feb26":0,"dist":95.8},{"city":"New London","lat":41.36,"lng":-72.1,"feb25":0,"may25":2,"feb26":0,"dist":70.6},{"city":"New Milford","lat":41.58,"lng":-73.41,"feb25":1,"may25":3,"feb26":0,"dist":31.8},{"city":"New Rochelle","lat":40.91,"lng":-73.78,"feb25":2,"may25":6,"feb26":0,"dist":23.7},{"city":"New York","lat":40.71,"lng":-74.01,"feb25":43,"may25":225,"feb26":20,"dist":41.9},{"city":"Newark","lat":40.74,"lng":-74.17,"feb25":3,"may25":0,"feb26":3,"dist":47.1},{"city":"Newburgh","lat":41.5,"lng":-74.01,"feb25":2,"may25":0,"feb26":0,"dist":40.3},{"city":"Newington","lat":41.7,"lng":-72.72,"feb25":1,"may25":3,"feb26":13,"dist":54.1},{"city":"Newport News","lat":37.09,"lng":-76.47,"feb25":0,"may25":2,"feb26":0,"dist":322.9},{"city":"Newton","lat":42.34,"lng":-71.21,"feb25":0,"may25":6,"feb26":0,"dist":141.7},{"city":"Newtown","lat":41.41,"lng":-73.31,"feb25":14,"may25":5,"feb26":0,"dist":20.8},{"city":"North Bergen","lat":40.8,"lng":-74.01,"feb25":0,"may25":0,"feb26":4,"dist":37.9},{"city":"North Wales","lat":40.21,"lng":-75.28,"feb25":0,"may25":0,"feb26":2,"dist":116.0},{"city":"Northport","lat":40.9,"lng":-73.34,"feb25":0,"may25":0,"feb26":2,"dist":15.8},{"city":"Norwalk","lat":41.12,"lng":-73.42,"feb25":68,"may25":115,"feb26":100,"dist":0.0},{"city":"Norwich","lat":41.52,"lng":-72.08,"feb25":4,"may25":0,"feb26":0,"dist":74.8},{"city":"Old Saybrook","lat":41.29,"lng":-72.38,"feb25":2,"may25":0,"feb26":0,"dist":55.3},{"city":"Orange","lat":41.28,"lng":-73.03,"feb25":0,"may25":0,"feb26":1,"dist":23.1},{"city":"Ossining","lat":41.16,"lng":-73.86,"feb25":3,"may25":0,"feb26":0,"dist":23.1},{"city":"Passaic","lat":40.86,"lng":-74.13,"feb25":0,"may25":3,"feb26":0,"dist":41.2},{"city":"Paterson","lat":40.92,"lng":-74.17,"feb25":0,"may25":3,"feb26":0,"dist":41.5},{"city":"Pawcatuck","lat":41.38,"lng":-71.83,"feb25":2,"may25":0,"feb26":8,"dist":84.5},{"city":"Peekskill","lat":41.29,"lng":-73.92,"feb25":0,"may25":1,"feb26":0,"dist":28.5},{"city":"Philadelphia","lat":39.95,"lng":-75.17,"feb25":4,"may25":2,"feb26":6,"dist":122.4},{"city":"Piscataway","lat":40.57,"lng":-74.46,"feb25":0,"may25":2,"feb26":0,"dist":66.3},{"city":"Pittsburgh","lat":40.44,"lng":-79.99,"feb25":0,"may25":1,"feb26":0,"dist":346.9},{"city":"Port Jefferson Station","lat":40.92,"lng":-73.05,"feb25":0,"may25":0,"feb26":5,"dist":23.7},{"city":"Port Washington","lat":40.83,"lng":-73.7,"feb25":0,"may25":2,"feb26":0,"dist":24.8},{"city":"Poughkeepsie","lat":41.7,"lng":-73.93,"feb25":0,"may25":3,"feb26":0,"dist":48.0},{"city":"Providence","lat":41.82,"lng":-71.41,"feb25":5,"may25":0,"feb26":11,"dist":114.8},{"city":"Queens","lat":40.73,"lng":-73.79,"feb25":4,"may25":9,"feb26":2,"dist":33.2},{"city":"Reading","lat":40.34,"lng":-75.93,"feb25":0,"may25":0,"feb26":6,"dist":142.0},{"city":"Redding","lat":41.3,"lng":-73.39,"feb25":4,"may25":0,"feb26":0,"dist":12.5},{"city":"Ridgefield","lat":41.28,"lng":-73.5,"feb25":0,"may25":5,"feb26":5,"dist":11.8},{"city":"River Edge","lat":40.93,"lng":-74.04,"feb25":3,"may25":0,"feb26":0,"dist":34.9},{"city":"Riverside","lat":41.03,"lng":-73.58,"feb25":3,"may25":0,"feb26":0,"dist":10.4},{"city":"Robins","lat":32.62,"lng":-83.59,"feb25":0,"may25":0,"feb26":2,"dist":811.9},{"city":"Rochester","lat":43.16,"lng":-77.61,"feb25":0,"may25":6,"feb26":0,"dist":256.8},{"city":"Rye","lat":40.98,"lng":-73.68,"feb25":9,"may25":3,"feb26":0,"dist":16.6},{"city":"Saranac Lake","lat":44.33,"lng":-74.13,"feb25":0,"may25":1,"feb26":0,"dist":224.7},{"city":"Scarsdale","lat":41.01,"lng":-73.78,"feb25":0,"may25":0,"feb26":2,"dist":20.2},{"city":"Schenectady","lat":42.81,"lng":-73.94,"feb25":2,"may25":0,"feb26":0,"dist":119.8},{"city":"Seekonk","lat":41.81,"lng":-71.34,"feb25":1,"may25":0,"feb26":0,"dist":117.8},{"city":"Shavertown","lat":41.34,"lng":-75.94,"feb25":0,"may25":2,"feb26":2,"dist":131.8},{"city":"Shelton","lat":41.24,"lng":-73.13,"feb25":2,"may25":0,"feb26":3,"dist":17.2},{"city":"Smithtown","lat":40.86,"lng":-73.2,"feb25":2,"may25":0,"feb26":0,"dist":21.3},{"city":"Somers","lat":41.33,"lng":-73.72,"feb25":0,"may25":2,"feb26":0,"dist":21.3},{"city":"Somerville","lat":42.39,"lng":-71.1,"feb25":0,"may25":0,"feb26":3,"dist":148.3},{"city":"South Plainfield","lat":40.58,"lng":-74.41,"feb25":0,"may25":0,"feb26":1,"dist":63.8},{"city":"South Salem","lat":41.24,"lng":-73.54,"feb25":4,"may25":0,"feb26":0,"dist":10.4},{"city":"Southbury","lat":41.48,"lng":-73.21,"feb25":2,"may25":0,"feb26":0,"dist":27.2},{"city":"Springfield","lat":42.1,"lng":-72.59,"feb25":1,"may25":6,"feb26":4,"dist":80.1},{"city":"Stamford","lat":41.05,"lng":-73.54,"feb25":32,"may25":21,"feb26":32,"dist":7.9},{"city":"Stratford","lat":41.18,"lng":-73.13,"feb25":14,"may25":0,"feb26":0,"dist":15.6},{"city":"Teaneck","lat":40.89,"lng":-74.01,"feb25":2,"may25":2,"feb26":0,"dist":34.6},{"city":"The Bronx","lat":40.84,"lng":-73.87,"feb25":2,"may25":4,"feb26":2,"dist":30.4},{"city":"Thomaston","lat":41.67,"lng":-73.07,"feb25":2,"may25":2,"feb26":0,"dist":42.1},{"city":"Thornwood","lat":41.12,"lng":-73.77,"feb25":0,"may25":0,"feb26":2,"dist":18.2},{"city":"Tolland","lat":41.87,"lng":-72.37,"feb25":4,"may25":0,"feb26":0,"dist":75.1},{"city":"Troy","lat":42.73,"lng":-73.69,"feb25":0,"may25":0,"feb26":2,"dist":112.1},{"city":"Trumbull","lat":41.24,"lng":-73.2,"feb25":2,"may25":2,"feb26":0,"dist":14.1},{"city":"Union","lat":40.7,"lng":-74.26,"feb25":0,"may25":3,"feb26":0,"dist":52.6},{"city":"Valley Stream","lat":40.66,"lng":-73.71,"feb25":2,"may25":2,"feb26":0,"dist":35.2},{"city":"Vernon","lat":41.84,"lng":-72.46,"feb25":0,"may25":5,"feb26":0,"dist":70.3},{"city":"Wallingford","lat":41.45,"lng":-72.82,"feb25":0,"may25":6,"feb26":0,"dist":38.6},{"city":"Waltham","lat":42.38,"lng":-71.24,"feb25":0,"may25":0,"feb26":2,"dist":142.2},{"city":"Wayne","lat":40.93,"lng":-74.28,"feb25":0,"may25":1,"feb26":0,"dist":46.7},{"city":"West Babylon","lat":40.72,"lng":-73.35,"feb25":0,"may25":2,"feb26":0,"dist":27.9},{"city":"West Hartford","lat":41.76,"lng":-72.74,"feb25":3,"may25":0,"feb26":13,"dist":56.5},{"city":"West Haven","lat":41.27,"lng":-72.95,"feb25":4,"may25":0,"feb26":3,"dist":26.5},{"city":"West Roxbury","lat":42.28,"lng":-71.16,"feb25":0,"may25":3,"feb26":0,"dist":141.5},{"city":"Westborough","lat":42.27,"lng":-71.62,"feb25":0,"may25":0,"feb26":3,"dist":122.2},{"city":"Weston","lat":41.2,"lng":-73.38,"feb25":3,"may25":6,"feb26":6,"dist":5.9},{"city":"Westport","lat":41.14,"lng":-73.36,"feb25":5,"may25":5,"feb26":6,"dist":3.4},{"city":"Westwood","lat":40.99,"lng":-74.03,"feb25":0,"may25":2,"feb26":2,"dist":33.0},{"city":"White Plains","lat":41.03,"lng":-73.77,"feb25":2,"may25":6,"feb26":9,"dist":19.3},{"city":"Wilton","lat":41.2,"lng":-73.44,"feb25":20,"may25":2,"feb26":7,"dist":5.6},{"city":"Windsor Locks","lat":41.93,"lng":-72.63,"feb25":4,"may25":0,"feb26":0,"dist":69.3},{"city":"Wingdale","lat":41.64,"lng":-73.55,"feb25":2,"may25":0,"feb26":0,"dist":36.6},{"city":"Wolcott","lat":41.6,"lng":-72.99,"feb25":0,"may25":0,"feb26":2,"dist":40.0},{"city":"Woodbury","lat":41.54,"lng":-73.21,"feb25":4,"may25":0,"feb26":4,"dist":31.0},{"city":"Wyckoff","lat":41.01,"lng":-74.17,"feb25":4,"may25":0,"feb26":0,"dist":39.8},{"city":"Yonkers","lat":40.93,"lng":-73.9,"feb25":7,"may25":0,"feb26":2,"dist":28.3},{"city":"Yorktown Heights","lat":41.27,"lng":-73.78,"feb25":1,"may25":0,"feb26":0,"dist":21.4}];
+
+const NORWALK = { lat: 41.12, lng: -73.42 };
+const COLORS = { feb25: "#f59e0b", may25: "#a855f7", feb26: "#06b6d4" };
+const LABELS = { feb25: "Feb 2025", may25: "May 2025", feb26: "Feb 2026" };
+
+function mercatorY(lat) { const r = (lat * Math.PI) / 180; return Math.log(Math.tan(Math.PI / 4 + r / 2)); }
+function project(lat, lng, bounds, w, h, p) {
+  const x = p + ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * (w - 2 * p);
+  const yN = (mercatorY(lat) - mercatorY(bounds.minLat)) / (mercatorY(bounds.maxLat) - mercatorY(bounds.minLat));
+  return { x, y: h - p - yN * (h - 2 * p) };
+}
+
+function App() {
+  const [activeEvents, setActiveEvents] = useState(["feb25", "feb26"]);
+  const [hoveredCity, setHoveredCity] = useState(null);
+  const [zoomRegion, setZoomRegion] = useState("northeast");
+
+  const toggleEvent = (e) => setActiveEvents(prev => prev.includes(e) ? prev.filter(x => x !== e) : [...prev, e]);
+
+  const regions = {
+    northeast: { minLat: 39.5, maxLat: 43.0, minLng: -77.0, maxLng: -70.5 },
+    wide: { minLat: 29.0, maxLat: 45.0, minLng: -107.0, maxLng: -70.0 },
+  };
+  const bounds = regions[zoomRegion];
+  const W = 920; const H = zoomRegion === "wide" ? 480 : 540; const PAD = 40;
+
+  const visibleCities = useMemo(() =>
+    CITIES.filter(c => c.lat >= bounds.minLat && c.lat <= bounds.maxLat && c.lng >= bounds.minLng && c.lng <= bounds.maxLng),
+    [zoomRegion]
+  );
+
+  const maxAtt = Math.max(...CITIES.map(c => Math.max(c.feb25, c.may25, c.feb26)));
+  const getR = (v) => v === 0 ? 0 : 3 + (v / maxAtt) * 20;
+
+  const stats = useMemo(() => {
+    const calc = (key) => {
+      const cities = CITIES.filter(c => c[key] > 0);
+      const total = cities.reduce((s, c) => s + c[key], 0);
+      const wavg = total > 0 ? cities.reduce((s, c) => s + c.dist * c[key], 0) / total : 0;
+      return { total, cities: cities.length, wavg };
+    };
+    return { feb25: calc("feb25"), may25: calc("may25"), feb26: calc("feb26") };
+  }, []);
+
+  const bandData = useMemo(() => {
+    const bands = [[0,15,"0\u201315mi"],[15,30,"15\u201330mi"],[30,60,"30\u201360mi"],[60,100,"60\u2013100mi"],[100,200,"100\u2013200mi"],[200,9999,"200+mi"]];
+    return bands.map(([lo,hi,label]) => {
+      const bc = CITIES.filter(c => c.dist >= lo && c.dist < hi);
+      return { label, feb25: bc.reduce((s,c)=>s+c.feb25,0), may25: bc.reduce((s,c)=>s+c.may25,0), feb26: bc.reduce((s,c)=>s+c.feb26,0) };
+    });
+  }, []);
+
+  const norwalkPos = project(NORWALK.lat, NORWALK.lng, bounds, W, H, PAD);
+  const milesPerDegLat = 69;
+  const milesPerDegLng = 69 * Math.cos((NORWALK.lat * Math.PI) / 180);
+
+  return (
+    React.createElement("div", {style:{fontFamily:"'DM Sans', 'Helvetica Neue', sans-serif",background:"#0a0e17",color:"#e0e4ed",minHeight:"100vh"}},
+      React.createElement("div", {style:{maxWidth:960,margin:"0 auto",padding:"32px 20px"}},
+        React.createElement("div", {style:{marginBottom:28}},
+          React.createElement("div", {style:{fontFamily:"'Space Mono', monospace",fontSize:11,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:6}}, "NHRL Ticket Geography"),
+          React.createElement("h1", {style:{fontSize:26,fontWeight:700,margin:0,color:"#fff"}}, "Three-Event Comparison"),
+          React.createElement("p", {style:{fontSize:13,color:"#8892a8",marginTop:6}}, "Feb 2025 (winter) \u2192 May 2025 (warm weather) \u2192 Feb 2026 (today)")
+        ),
+        React.createElement("div", {style:{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:12,marginBottom:20}},
+          ["feb25","may25","feb26"].map(key =>
+            React.createElement("div", {key, style:{background:"#141926",borderRadius:8,padding:"14px 16px",border:"1px solid "+(activeEvents.includes(key)?COLORS[key]+"44":"#1e2536"),cursor:"pointer",transition:"all 0.2s",opacity:activeEvents.includes(key)?1:0.5},onClick:()=>toggleEvent(key)},
+              React.createElement("div", {style:{display:"flex",justifyContent:"space-between",alignItems:"baseline"}},
+                React.createElement("span", {style:{fontFamily:"'Space Mono', monospace",fontSize:22,fontWeight:700,color:COLORS[key]}}, stats[key].total),
+                React.createElement("span", {style:{fontSize:10,color:"#6b7490",textTransform:"uppercase",letterSpacing:1}}, LABELS[key])
+              ),
+              React.createElement("div", {style:{fontSize:11,color:"#6b7490",marginTop:6,display:"flex",gap:12}},
+                React.createElement("span", null, stats[key].cities+" cities"),
+                React.createElement("span", null, "avg "+stats[key].wavg.toFixed(0)+"mi travel")
+              )
+            )
+          )
+        ),
+        React.createElement("div", {style:{display:"flex",gap:8,marginBottom:14}},
+          [["northeast","CT/NY/NJ Focus"],["wide","Full Map"]].map(([k,l]) =>
+            React.createElement("button", {key:k,onClick:()=>setZoomRegion(k),style:{padding:"6px 14px",fontSize:11,fontWeight:600,border:"none",cursor:"pointer",fontFamily:"'DM Sans', sans-serif",borderRadius:4,background:zoomRegion===k?"#1e2536":"transparent",color:zoomRegion===k?"#e0e4ed":"#6b7490"}}, l)
+          ),
+          React.createElement("span", {style:{fontSize:11,color:"#4a5270",marginLeft:"auto",alignSelf:"center"}}, "Click event cards above to toggle layers")
+        ),
+        React.createElement("div", {style:{background:"#0d1220",borderRadius:12,border:"1px solid #1e2536",overflow:"hidden",position:"relative"}},
+          React.createElement("svg", {width:"100%",viewBox:"0 0 "+W+" "+H,style:{display:"block"}},
+            React.createElement("defs", null,
+              Object.entries(COLORS).map(([k,c]) =>
+                React.createElement("radialGradient", {key:k,id:"g_"+k,cx:"50%",cy:"50%",r:"50%"},
+                  React.createElement("stop", {offset:"0%",stopColor:c,stopOpacity:"0.35"}),
+                  React.createElement("stop", {offset:"100%",stopColor:c,stopOpacity:"0"})
+                )
+              )
+            ),
+            Array.from({length:18},(_,i)=>React.createElement("line",{key:"v"+i,x1:PAD+(i*(W-2*PAD))/17,y1:PAD,x2:PAD+(i*(W-2*PAD))/17,y2:H-PAD,stroke:"#151c2e",strokeWidth:"0.5"})),
+            Array.from({length:12},(_,i)=>React.createElement("line",{key:"h"+i,x1:PAD,y1:PAD+(i*(H-2*PAD))/11,x2:W-PAD,y2:PAD+(i*(H-2*PAD))/11,stroke:"#151c2e",strokeWidth:"0.5"})),
+            zoomRegion==="northeast" && [30,60,100].map(miles=>{
+              const rLat=miles/milesPerDegLat;const rLng=miles/milesPerDegLng;
+              const pts=Array.from({length:120},(_,i)=>{const a=(i*Math.PI*2)/120;const p=project(NORWALK.lat+rLat*Math.sin(a),NORWALK.lng+rLng*Math.cos(a),bounds,W,H,PAD);return p.x+","+p.y}).join(" ");
+              const lp=project(NORWALK.lat,NORWALK.lng+rLng,bounds,W,H,PAD);
+              return React.createElement("g",{key:miles},
+                React.createElement("polyline",{points:pts,fill:"none",stroke:"#1a2238",strokeWidth:"1",strokeDasharray:"4 4"}),
+                React.createElement("text",{x:lp.x,y:lp.y-5,fill:"#2a3452",fontSize:"9",fontFamily:"'Space Mono', monospace",textAnchor:"middle"},miles+"mi")
+              );
+            }),
+            React.createElement("circle",{cx:norwalkPos.x,cy:norwalkPos.y,r:"3",fill:"#f59e0b"}),
+            React.createElement("circle",{cx:norwalkPos.x,cy:norwalkPos.y,r:"8",fill:"none",stroke:"#f59e0b",strokeWidth:"1",opacity:"0.3"}),
+            React.createElement("text",{x:norwalkPos.x,y:norwalkPos.y-12,fill:"#f59e0b",fontSize:"9",fontFamily:"'Space Mono', monospace",textAnchor:"middle",fontWeight:"700"},"NHRL"),
+            visibleCities.map(c=>{
+              const pos=project(c.lat,c.lng,bounds,W,H,PAD);
+              const isH=hoveredCity===c.city;
+              const evts=activeEvents.filter(e=>c[e]>0);
+              if(evts.length===0)return null;
+              const maxR=Math.max(...evts.map(e=>getR(c[e])));
+              return React.createElement("g",{key:c.city,onMouseEnter:()=>setHoveredCity(c.city),onMouseLeave:()=>setHoveredCity(null),style:{cursor:"pointer"}},
+                evts.map((e,i)=>{
+                  const r=getR(c[e]);
+                  const ox=evts.length>1?(i-(evts.length-1)/2)*Math.min(r*0.7,10):0;
+                  return React.createElement("g",{key:e},
+                    React.createElement("circle",{cx:pos.x+ox,cy:pos.y,r:r*1.8,fill:"url(#g_"+e+")"}),
+                    React.createElement("circle",{cx:pos.x+ox,cy:pos.y,r,fill:COLORS[e],opacity:isH?0.45:0.22,stroke:COLORS[e],strokeWidth:isH?1.5:0.6,strokeOpacity:0.7})
+                  );
+                }),
+                isH && React.createElement("g",null,
+                  React.createElement("rect",{x:pos.x-70,y:pos.y-maxR-42,width:140,height:34,rx:4,fill:"#141926",stroke:"#2a3452",strokeWidth:"0.5",opacity:"0.95"}),
+                  React.createElement("text",{x:pos.x,y:pos.y-maxR-29,fill:"#fff",fontSize:"11",fontFamily:"'DM Sans', sans-serif",fontWeight:"600",textAnchor:"middle"},c.city+" ("+c.dist.toFixed(0)+"mi)"),
+                  React.createElement("text",{x:pos.x,y:pos.y-maxR-15,fill:"#8892a8",fontSize:"10",fontFamily:"'Space Mono', monospace",textAnchor:"middle"},activeEvents.map(e=>c[e]>0?c[e]:"\u2013").join(" / "))
+                )
+              );
+            })
+          ),
+          React.createElement("div",{style:{position:"absolute",bottom:10,left:10,background:"rgba(10,14,23,0.92)",borderRadius:6,padding:"6px 12px",border:"1px solid #1e2536",display:"flex",gap:14,fontSize:10}},
+            activeEvents.map(e=>
+              React.createElement("div",{key:e,style:{display:"flex",alignItems:"center",gap:5}},
+                React.createElement("div",{style:{width:8,height:8,borderRadius:"50%",background:COLORS[e],opacity:0.7}}),
+                React.createElement("span",{style:{color:COLORS[e]}},LABELS[e])
+              )
+            )
+          )
+        ),
+        React.createElement("div",{style:{background:"#141926",borderRadius:10,padding:20,border:"1px solid #1e2536",marginTop:20}},
+          React.createElement("div",{style:{fontFamily:"'Space Mono', monospace",fontSize:11,color:"#10b981",letterSpacing:2,marginBottom:16,textTransform:"uppercase"}},"Attendees by Distance from Norwalk"),
+          React.createElement("div",{style:{display:"grid",gap:8}},
+            bandData.map(b=>{
+              const bandMax=Math.max(b.feb25,b.may25,b.feb26,1);
+              return React.createElement("div",{key:b.label,style:{display:"grid",gridTemplateColumns:"80px 1fr",alignItems:"center",gap:12}},
+                React.createElement("span",{style:{fontSize:11,color:"#8892a8",fontFamily:"'Space Mono', monospace",textAlign:"right"}},b.label),
+                React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:2}},
+                  ["feb25","may25","feb26"].filter(e=>activeEvents.includes(e)).map(e=>
+                    React.createElement("div",{key:e,style:{display:"flex",alignItems:"center",gap:6}},
+                      React.createElement("div",{style:{height:8,borderRadius:4,background:COLORS[e],opacity:0.6,width:(b[e]/bandMax)*100+"%",minWidth:b[e]>0?3:0,transition:"width 0.4s"}}),
+                      React.createElement("span",{style:{fontSize:10,color:COLORS[e],fontFamily:"'Space Mono', monospace",minWidth:24}},b[e])
+                    )
+                  )
+                )
+              );
+            })
+          )
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:12,marginTop:16}},
+          ["feb25","may25","feb26"].map(key=>{
+            const top=[...CITIES].sort((a,b)=>b[key]-a[key]).slice(0,8).filter(c=>c[key]>0);
+            const topVal=top[0]?top[0][key]:1;
+            return React.createElement("div",{key,style:{background:"#141926",borderRadius:10,padding:16,border:"1px solid #1e2536"}},
+              React.createElement("div",{style:{fontFamily:"'Space Mono', monospace",fontSize:10,color:COLORS[key],letterSpacing:2,marginBottom:10,textTransform:"uppercase"}},"Top Cities \u2014 "+LABELS[key]),
+              top.map((c,i)=>
+                React.createElement("div",{key:c.city,style:{display:"flex",alignItems:"center",gap:6,marginBottom:5}},
+                  React.createElement("span",{style:{fontFamily:"'Space Mono', monospace",fontSize:9,color:"#4a5270",width:14,textAlign:"right"}},i+1+"."),
+                  React.createElement("div",{style:{flex:1}},React.createElement("div",{style:{height:5,borderRadius:3,background:COLORS[key],opacity:0.45,width:(c[key]/topVal)*100+"%"}})),
+                  React.createElement("span",{style:{fontSize:11,color:"#c0c8dc",minWidth:72,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},c.city),
+                  React.createElement("span",{style:{fontFamily:"'Space Mono', monospace",fontSize:11,color:COLORS[key],fontWeight:700,minWidth:22,textAlign:"right"}},c[key]),
+                  React.createElement("span",{style:{fontSize:9,color:"#4a5270",minWidth:32,textAlign:"right"}},c.dist.toFixed(0)+"mi")
+                )
+              )
+            );
+          })
+        ),
+        React.createElement("div",{style:{background:"linear-gradient(135deg, #141926 0%, #1a1f33 100%)",borderRadius:10,padding:20,border:"1px solid #2a3452",marginTop:16}},
+          React.createElement("div",{style:{fontFamily:"'Space Mono', monospace",fontSize:10,color:"#f59e0b",letterSpacing:2,marginBottom:10,textTransform:"uppercase"}},"Key Insight \u2014 Avg Travel Distance"),
+          React.createElement("div",{style:{display:"flex",gap:24,alignItems:"flex-end"}},
+            ["feb25","may25","feb26"].map(key=>
+              React.createElement("div",{key,style:{textAlign:"center"}},
+                React.createElement("div",{style:{width:40,background:COLORS[key],opacity:0.5,borderRadius:"4px 4px 0 0",height:stats[key].wavg*1.2,transition:"height 0.4s"}}),
+                React.createElement("div",{style:{fontFamily:"'Space Mono', monospace",fontSize:16,fontWeight:700,color:COLORS[key],marginTop:6}},stats[key].wavg.toFixed(0)+"mi"),
+                React.createElement("div",{style:{fontSize:10,color:"#6b7490"}},LABELS[key])
+              )
+            ),
+            React.createElement("div",{style:{fontSize:12,color:"#8892a8",maxWidth:400,lineHeight:1.5,marginLeft:12}},
+              "May\u2019s warmer weather pulled fans from ",
+              React.createElement("span",{style:{color:"#a855f7",fontWeight:600}},"75mi avg"),
+              " \u2014 driven largely by NYC (225 attendees, 42mi away) and Ithaca (43 people, 183mi). Feb events draw tighter, with the Feb 2026 audience slightly wider at ",
+              React.createElement("span",{style:{color:"#06b6d4",fontWeight:600}},"59mi"),
+              " vs last Feb\u2019s ",
+              React.createElement("span",{style:{color:"#f59e0b",fontWeight:600}},"50mi"),
+              "."
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(React.createElement(App));
+</script>
+
+</body>
+</html>
